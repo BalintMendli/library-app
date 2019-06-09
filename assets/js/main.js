@@ -13,10 +13,13 @@ function libraryMain() {
 
   addBookToLibrary('The Catcher in the Rye', 'J.D. Salinger', true);
   addBookToLibrary('The Brothers Karamazov', 'Fyodor Dostoevsky');
+  addBookToLibrary('Ulysses', 'James Joyce');
   console.log(myLibrary);
 
   function render() {
     const container = document.querySelector('#book-container');
+    [...container.childNodes].forEach(el => el.remove());
+
     myLibrary.forEach((book, i) => {
       const bookNode = document.createElement('div');
       bookNode.classList.add('book');
@@ -44,6 +47,17 @@ function libraryMain() {
       }
       read.addEventListener('click', updateRead);
       bookNode.appendChild(read);
+
+      const remove = document.createElement('p');
+      remove.textContent = 'Remove book';
+      remove.classList.add('book-remove');
+      function removeBook() {
+        myLibrary.splice(i, 1);
+        document.querySelector(`[data-number='${i}']`).remove();
+      }
+      remove.addEventListener('click', removeBook);
+      bookNode.appendChild(remove);
+
       container.appendChild(bookNode);
     });
   }
