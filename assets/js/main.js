@@ -17,20 +17,32 @@ function libraryMain() {
 
   function render() {
     const container = document.querySelector('#book-container');
-    myLibrary.forEach(book => {
+    myLibrary.forEach((book, i) => {
       const bookNode = document.createElement('div');
       bookNode.classList.add('book');
+      bookNode.setAttribute('data-number', i);
+
       const title = document.createElement('h2');
-      title.innerHTML = book.title;
+      title.textContent = book.title;
       title.classList.add('book-title');
       bookNode.appendChild(title);
+
       const author = document.createElement('p');
-      author.innerHTML = book.author;
+      author.textContent = book.author;
       author.classList.add('book-author');
       bookNode.appendChild(author);
+
       const read = document.createElement('p');
-      read.innerHTML = book.read ? 'read' : 'not read';
+      read.textContent = book.read ? 'read' : 'not read';
       read.classList.add('book-read');
+      function updateRead() {
+        myLibrary[i].read = !myLibrary[i].read;
+        const readNode = document.querySelector(
+          `[data-number='${i}'] .book-read`
+        );
+        readNode.textContent = myLibrary[i].read ? 'read' : 'not read';
+      }
+      read.addEventListener('click', updateRead);
       bookNode.appendChild(read);
       container.appendChild(bookNode);
     });
