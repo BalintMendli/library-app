@@ -1,4 +1,4 @@
-function library() {
+function libraryMain() {
   const myLibrary = [];
 
   function Book(title, author, read = false) {
@@ -11,10 +11,32 @@ function library() {
     myLibrary.push(new Book(title, author, read));
   }
 
-  addBookToLibrary('Old man', 'hemingway');
+  addBookToLibrary('The Catcher in the Rye', 'J.D. Salinger', true);
+  addBookToLibrary('The Brothers Karamazov', 'Fyodor Dostoevsky');
   console.log(myLibrary);
+
+  function render() {
+    const container = document.querySelector('#book-container');
+    myLibrary.forEach(book => {
+      const bookNode = document.createElement('div');
+      bookNode.classList.add('book');
+      const title = document.createElement('h2');
+      title.innerHTML = book.title;
+      title.classList.add('book-title');
+      bookNode.appendChild(title);
+      const author = document.createElement('p');
+      author.innerHTML = book.author;
+      author.classList.add('book-author');
+      bookNode.appendChild(author);
+      const read = document.createElement('p');
+      read.innerHTML = book.read ? 'read' : 'not read';
+      read.classList.add('book-read');
+      bookNode.appendChild(read);
+      container.appendChild(bookNode);
+    });
+  }
+
+  render();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  library();
-});
+document.addEventListener('DOMContentLoaded', libraryMain);
