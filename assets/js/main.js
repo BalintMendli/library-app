@@ -1,9 +1,10 @@
 function libraryMain() {
   const myLibrary = [];
 
-  function Book(title, author, read = false) {
+  function Book(title, author, pages, read = false) {
     this.title = title;
     this.author = author;
+    this.pages = pages;
     this.read = read;
   }
 
@@ -21,6 +22,11 @@ function libraryMain() {
     authorNode.textContent = this.author;
     authorNode.classList.add('book-author');
     bookNode.appendChild(authorNode);
+
+    const pagesNode = document.createElement('p');
+    pagesNode.textContent = this.pages;
+    pagesNode.classList.add('book-pages');
+    bookNode.appendChild(pagesNode);
 
     const readNode = document.createElement('p');
     readNode.textContent = this.read ? 'read' : 'not read';
@@ -50,13 +56,13 @@ function libraryMain() {
 
   const container = document.querySelector('#book-container');
 
-  function addBookToLibrary(title, author, read) {
-    myLibrary.push(new Book(title, author, read));
+  function addBookToLibrary(title, author, pages, read) {
+    myLibrary.push(new Book(title, author, pages, read));
   }
 
-  addBookToLibrary('The Catcher in the Rye', 'J.D. Salinger', true);
-  addBookToLibrary('The Brothers Karamazov', 'Fyodor Dostoevsky');
-  addBookToLibrary('Ulysses', 'James Joyce');
+  addBookToLibrary('The Catcher in the Rye', 'J.D. Salinger', 554, true);
+  addBookToLibrary('The Brothers Karamazov', 'Fyodor Dostoevsky', 811);
+  addBookToLibrary('Ulysses', 'James Joyce', 740);
 
   function renderLibrary() {
     [...container.childNodes].forEach(node => node.remove());
@@ -70,6 +76,11 @@ function libraryMain() {
   function addNewBook() {
     const title = document.querySelector('#title-input').value;
     const author = document.querySelector('#author-input').value;
+    const pages = document.querySelector('#pages-input').value;
+    if (!pages || pages % 1 !== 0 || pages < 0) {
+      alert('Please enter a valid page number.');
+      return;
+    }
     const read = document.querySelector('#read-input').checked;
     if (title && author) {
       addBookToLibrary(title, author, read);
@@ -77,6 +88,7 @@ function libraryMain() {
       document.querySelector('.form').classList.add('hide');
       document.querySelector('#title-input').value = '';
       document.querySelector('#author-input').value = '';
+      document.querySelector('#pages-input').value = '';
       document.querySelector('#read-input').checked = false;
     } else {
       alert("Title and author can't be empty.");
