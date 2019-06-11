@@ -8,7 +8,8 @@ function libraryMain() {
     this.read = read;
   }
 
-  Book.prototype.render = function(i) {
+  Book.prototype.render = function(parentNode) {
+    const i = parentNode.childElementCount;
     const bookNode = document.createElement('div');
     bookNode.classList.add('book');
     bookNode.setAttribute('data-number', i);
@@ -54,8 +55,6 @@ function libraryMain() {
     container.appendChild(bookNode);
   };
 
-  const container = document.querySelector('#book-container');
-
   function addBookToLibrary(title, author, pages, read) {
     myLibrary.push(new Book(title, author, pages, read));
   }
@@ -64,9 +63,15 @@ function libraryMain() {
   addBookToLibrary('The Brothers Karamazov', 'Fyodor Dostoevsky', 811);
   addBookToLibrary('Ulysses', 'James Joyce', 740);
 
+  const container = document.querySelector('#book-container');
+
+  function clearNodes(node) {
+    [...node.childNodes].forEach(childNode => childNode.remove());
+  }
+
   function renderLibrary() {
-    [...container.childNodes].forEach(node => node.remove());
-    myLibrary.forEach((book, i) => book.render(i));
+    clearNodes(container);
+    myLibrary.forEach((book, i) => book.render(container));
   }
 
   document.querySelector('#new-book').addEventListener('click', () => {
@@ -84,7 +89,7 @@ function libraryMain() {
     const read = document.querySelector('#read-input').checked;
     if (title && author) {
       addBookToLibrary(title, author, read);
-      myLibrary[myLibrary.length - 1].render(myLibrary.length - 1);
+      myLibrary[myLibrary.length - 1].render(container);
       document.querySelector('.form').classList.add('hide');
       document.querySelector('#title-input').value = '';
       document.querySelector('#author-input').value = '';
