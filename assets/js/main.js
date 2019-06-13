@@ -1,6 +1,4 @@
 function libraryMain() {
-  const myLibrary = [];
-
   function Book(title, author, pages, read = false) {
     this.title = title;
     this.author = author;
@@ -34,6 +32,7 @@ function libraryMain() {
     readNode.classList.add('book-read');
     function updateRead() {
       myLibrary[i].read = !myLibrary[i].read;
+      storeLibrary();
       const readNodeToChange = document.querySelector(
         `[data-number='${i}'] .book-read`
       );
@@ -47,6 +46,7 @@ function libraryMain() {
     removeNode.classList.add('book-remove');
     function removeBook() {
       myLibrary.splice(i, 1);
+      storeLibrary();
       renderLibrary();
     }
     removeNode.addEventListener('click', removeBook);
@@ -55,13 +55,35 @@ function libraryMain() {
     container.appendChild(bookNode);
   };
 
-  function addBookToLibrary(title, author, pages, read) {
-    myLibrary.push(new Book(title, author, pages, read));
+  const initialBooks = [
+    ['The Catcher in the Rye', 'J.D. Salinger', 554, true],
+    ['The Brothers Karamazov', 'Fyodor Dostoevsky', 811],
+    ['Ulysses', 'James Joyce', 740]
+  ];
+
+  const books =
+    JSON.parse(localStorage.getItem('library')) ||
+    initialBooks.map(b => ({
+      title: b[0],
+      author: b[1],
+      pages: b[2],
+      read: b[3]
+    }));
+
+  const myLibrary = [];
+
+  books.forEach(book =>
+    addBookToLibrary(book.title, book.author, book.pages, book.read)
+  );
+
+  function storeLibrary() {
+    localStorage.setItem('library', JSON.stringify(myLibrary));
   }
 
-  addBookToLibrary('The Catcher in the Rye', 'J.D. Salinger', 554, true);
-  addBookToLibrary('The Brothers Karamazov', 'Fyodor Dostoevsky', 811);
-  addBookToLibrary('Ulysses', 'James Joyce', 740);
+  function addBookToLibrary(title, author, pages, read) {
+    myLibrary.push(new Book(title, author, pages, read));
+    storeLibrary();
+  }
 
   const container = document.querySelector('#book-container');
 
