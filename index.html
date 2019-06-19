@@ -5,25 +5,53 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Book Library</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css"
+      integrity="sha256-39jKbsb/ty7s7+4WzbtELS4vq9udJ+MDjGTD5mtxHZ0="
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
     <script type="text/javascript" src="assets/js/main.js"></script>
   </head>
   <body>
+    <div id="header"><i class="fas fa-book-open"></i>Book Library</div>
     <div class="container">
-      <div id="header">Book Library</div>
-      <div id="book-container"></div>
-      <div class="button" id="new-book">New book</div>
+      <div class="button" id="new-book">
+        <i class="fas fa-plus"></i>New book
+      </div>
       <div class="form hide">
-        <label for="title-input">Title:</label>
-        <input type="text" name="title" id="title-input" />
-        <label for="author-input">Author:</label>
-        <input type="text" name="author" id="author-input" />
-        <label for="pages-input">Number of pages:</label>
-        <input type="number" min="0" step="1" name="pages" id="pages-input" />
-        <label for="read-input">Read:</label>
-        <input type="checkbox" name="read" id="read-input" />
+        <div class="input-fields">
+          <div class="form-group">
+            <label for="title-input">Title:</label>
+            <input type="text" name="title" id="title-input" />
+          </div>
+          <div class="form-group">
+            <label for="author-input">Author:</label>
+            <input type="text" name="author" id="author-input" />
+          </div>
+          <div class="form-group">
+            <label for="pages-input">Number of pages:</label>
+            <input
+              type="number"
+              min="0"
+              step="1"
+              name="pages"
+              id="pages-input"
+            />
+          </div>
+          <div class="form-group">
+            <label for="read-input">Read:</label>
+            <input type="checkbox" name="read" id="read-input" />
+          </div>
+        </div>
         <div class="button" id="add-book">Add book</div>
       </div>
+      <div id="book-container"></div>
     </div>
   </body>
 </html>

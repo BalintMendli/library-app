@@ -1,3 +1,5 @@
+document.addEventListener('DOMContentLoaded', libraryMain);
+
 function libraryMain() {
   function Book(title, author, pages, read = false) {
     this.title = title;
@@ -18,32 +20,37 @@ function libraryMain() {
     bookNode.appendChild(titleNode);
 
     const authorNode = document.createElement('p');
-    authorNode.textContent = this.author;
+    authorNode.textContent = 'by ' + this.author;
     authorNode.classList.add('book-author');
     bookNode.appendChild(authorNode);
 
     const pagesNode = document.createElement('p');
-    pagesNode.textContent = this.pages;
+    pagesNode.textContent = this.pages + ' pages';
     pagesNode.classList.add('book-pages');
     bookNode.appendChild(pagesNode);
 
     const readNode = document.createElement('p');
-    readNode.textContent = this.read ? 'read' : 'not read';
+    readNode.textContent = 'Read: ';
     readNode.classList.add('book-read');
+    if (this.read) readNode.classList.add('checked');
     function updateRead() {
       myLibrary[i].read = !myLibrary[i].read;
       storeLibrary();
       const readNodeToChange = document.querySelector(
         `[data-number='${i}'] .book-read`
       );
-      readNodeToChange.textContent = myLibrary[i].read ? 'read' : 'not read';
+      if (myLibrary[i].read) {
+        readNodeToChange.classList.add('checked');
+      } else {
+        readNodeToChange.classList.remove('checked');
+      }
     }
     readNode.addEventListener('click', updateRead);
     bookNode.appendChild(readNode);
 
     const removeNode = document.createElement('p');
     removeNode.textContent = 'Remove book';
-    removeNode.classList.add('book-remove');
+    removeNode.classList.add('book-remove', 'button');
     function removeBook() {
       myLibrary.splice(i, 1);
       storeLibrary();
@@ -110,7 +117,7 @@ function libraryMain() {
     }
     const read = document.querySelector('#read-input').checked;
     if (title && author) {
-      addBookToLibrary(title, author, read);
+      addBookToLibrary(title, author, pages, read);
       myLibrary[myLibrary.length - 1].render(container);
       document.querySelector('.form').classList.add('hide');
       document.querySelector('#title-input').value = '';
@@ -125,5 +132,3 @@ function libraryMain() {
 
   renderLibrary();
 }
-
-document.addEventListener('DOMContentLoaded', libraryMain);
