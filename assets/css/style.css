@@ -61,7 +61,7 @@ body {
   }
 }
 
-#new-book {
+#new-book-button {
   font-size: 1.5rem;
   margin-top: 50px;
 }
@@ -82,7 +82,7 @@ body {
   background-position: 0 20%;
 }
 
-#new-book i {
+#new-book-button i {
   margin-right: 15px;
 }
 
@@ -113,7 +113,7 @@ input:not([type='checkbox']):focus {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
-#add-book {
+#add-book-button {
   margin-top: 30px;
   font-size: 1.2rem;
 }
