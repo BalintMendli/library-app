@@ -9,34 +9,48 @@ Book.prototype.toggleRead = function() {
   this.read = !this.read;
 };
 
-function addBookToLibrary(title, author, pages, read) {
-  myLibrary.push(new Book(title, author, pages, read));
+function addBookToLibrary(book, library) {
+  const { title, author, pages, read } = book;
+  const newLibrary = [...library, new Book(title, author, pages, read)];
+  return newLibrary;
 }
 
-function removeBook(i) {
-  myLibrary.splice(i, 1);
+function removeBook(index, library) {
+  newLibrary = library.filter((b, i) => i !== index);
+  return newLibrary;
+}
+
+function updateRead(index, library) {
+  newLibrary = library.map((b, i) => {
+    if (i === index) {
+      newB = Object.assign(Object.create(Book.prototype), b);
+      newB.toggleRead();
+      return newB;
+    } else {
+      return b;
+    }
+  });
+  return newLibrary;
 }
 
 const initialBooks = [
-  ['The Catcher in the Rye', 'J.D. Salinger', 554, true],
-  ['The Brothers Karamazov', 'Fyodor Dostoevsky', 811],
-  ['Ulysses', 'James Joyce', 740]
+  { title: 'The Catcher in the Rye', author: 'J.D. Salinger', pages: 554 },
+  { title: 'The Brothers Karamazov', author: 'Fyodor Dostoevsky', pages: 811 },
+  { title: 'Ulysses', author: 'James Joyce', pages: 740, read: true }
 ];
 
-const books =
-  JSON.parse(localStorage.getItem('library')) ||
-  initialBooks.map(b => ({
-    title: b[0],
-    author: b[1],
-    pages: b[2],
-    read: b[3]
-  }));
+function setOrExtractLibrary(initialData) {
+  if (!localStorage.getItem('library'))
+    localStorage.setItem('library', JSON.stringify(initialData));
+  const books = JSON.parse(localStorage.getItem('library'));
+  return books;
+}
 
-const myLibrary = [];
+const books = setOrExtractLibrary(initialBooks);
 
-books.forEach(book =>
-  addBookToLibrary(book.title, book.author, book.pages, book.read)
-);
+let myLibrary = [];
+
+books.forEach(book => (myLibrary = addBookToLibrary(book, myLibrary)));
 
 function renderBook(book, parentNode) {
   const i = parentNode.childElementCount;
@@ -63,19 +77,19 @@ function renderBook(book, parentNode) {
   readNode.textContent = 'Read: ';
   readNode.classList.add('book-read');
   if (book.read) readNode.classList.add('checked');
-  function updateRead() {
-    book.toggleRead();
+  function changeRead() {
+    myLibrary = updateRead(i, myLibrary);
     storeLibrary();
     renderLibrary();
   }
-  readNode.addEventListener('click', updateRead);
+  readNode.addEventListener('click', changeRead);
   bookNode.appendChild(readNode);
 
   const removeNode = document.createElement('p');
   removeNode.textContent = 'Remove book';
   removeNode.classList.add('book-remove', 'button');
   function deleteBook() {
-    removeBook(i);
+    myLibrary = removeBook(i, myLibrary);
     storeLibrary();
     renderLibrary();
   }
@@ -114,9 +128,6 @@ function getNewBookFromForm() {
   }
   const read = document.querySelector('#read-input').checked;
   if (title && author) {
-    addBookToLibrary(title, author, pages, read);
-    storeLibrary();
-    renderLibrary();
     document.querySelector('.form').classList.add('hide');
     document.querySelector('#title-input').value = '';
     document.querySelector('#author-input').value = '';
@@ -124,10 +135,22 @@ function getNewBookFromForm() {
     document.querySelector('#read-input').checked = false;
   } else {
     alert("Title and author can't be empty.");
+    return;
+  }
+  return { title, author, pages, read };
+}
+
+function saveNewBookFromForm() {
+  const newBook = getNewBookFromForm();
+  if (newBook) {
+    myLibrary = addBookToLibrary(newBook, myLibrary);
+    storeLibrary();
+    renderLibrary();
   }
 }
+
 document
   .querySelector('#add-book-button')
-  .addEventListener('click', getNewBookFromForm);
+  .addEventListener('click', saveNewBookFromForm);
 
 renderLibrary();
