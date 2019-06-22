@@ -52,6 +52,8 @@ let myLibrary = [];
 
 books.forEach(book => (myLibrary = addBookToLibrary(book, myLibrary)));
 
+const container = document.querySelector('#book-container');
+
 function renderBook(book, parentNode) {
   const i = parentNode.childElementCount;
   const bookNode = document.createElement('div');
@@ -79,8 +81,8 @@ function renderBook(book, parentNode) {
   if (book.read) readNode.classList.add('checked');
   function changeRead() {
     myLibrary = updateRead(i, myLibrary);
-    storeLibrary();
-    renderLibrary();
+    storeLibrary(myLibrary);
+    renderLibrary(myLibrary, container);
   }
   readNode.addEventListener('click', changeRead);
   bookNode.appendChild(readNode);
@@ -90,8 +92,8 @@ function renderBook(book, parentNode) {
   removeNode.classList.add('book-remove', 'button');
   function deleteBook() {
     myLibrary = removeBook(i, myLibrary);
-    storeLibrary();
-    renderLibrary();
+    storeLibrary(myLibrary);
+    renderLibrary(myLibrary, container);
   }
   removeNode.addEventListener('click', deleteBook);
   bookNode.appendChild(removeNode);
@@ -99,19 +101,17 @@ function renderBook(book, parentNode) {
   container.appendChild(bookNode);
 }
 
-const container = document.querySelector('#book-container');
-
-function renderLibrary() {
-  clearNodes(container);
-  myLibrary.forEach(book => renderBook(book, container));
+function renderLibrary(library, node) {
+  clearNodes(node);
+  library.forEach(book => renderBook(book, node));
 }
 
 function clearNodes(node) {
   [...node.childNodes].forEach(childNode => childNode.remove());
 }
 
-function storeLibrary() {
-  localStorage.setItem('library', JSON.stringify(myLibrary));
+function storeLibrary(library) {
+  localStorage.setItem('library', JSON.stringify(library));
 }
 
 document.querySelector('#new-book-button').addEventListener('click', () => {
@@ -144,8 +144,8 @@ function saveNewBookFromForm() {
   const newBook = getNewBookFromForm();
   if (newBook) {
     myLibrary = addBookToLibrary(newBook, myLibrary);
-    storeLibrary();
-    renderLibrary();
+    storeLibrary(myLibrary);
+    renderLibrary(myLibrary, container);
   }
 }
 
@@ -153,4 +153,4 @@ document
   .querySelector('#add-book-button')
   .addEventListener('click', saveNewBookFromForm);
 
-renderLibrary();
+renderLibrary(myLibrary, container);
