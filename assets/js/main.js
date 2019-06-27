@@ -11,26 +11,11 @@ Book.prototype.toggleRead = function() {
 
 function addBookToLibrary(book, library) {
   const { title, author, pages, read } = book;
-  const newLibrary = [...library, new Book(title, author, pages, read)];
-  return newLibrary;
+  library.push(new Book(title, author, pages, read));
 }
 
-function removeBook(index, library) {
-  newLibrary = library.filter((b, i) => i !== index);
-  return newLibrary;
-}
-
-function updateRead(index, library) {
-  newLibrary = library.map((b, i) => {
-    if (i === index) {
-      newB = Object.assign(Object.create(Book.prototype), b);
-      newB.toggleRead();
-      return newB;
-    } else {
-      return b;
-    }
-  });
-  return newLibrary;
+function removeBook(i, library) {
+  library.splice(i, 1);
 }
 
 const initialBooks = [
@@ -48,11 +33,9 @@ function setOrExtractLibrary(initialData) {
 
 const books = setOrExtractLibrary(initialBooks);
 
-let myLibrary = [];
+const myLibrary = [];
 
-books.forEach(book => (myLibrary = addBookToLibrary(book, myLibrary)));
-
-const container = document.querySelector('#book-container');
+books.forEach(book => addBookToLibrary(book, myLibrary));
 
 function renderBook(book, parentNode) {
   const i = parentNode.childElementCount;
@@ -79,19 +62,19 @@ function renderBook(book, parentNode) {
   readNode.textContent = 'Read: ';
   readNode.classList.add('book-read');
   if (book.read) readNode.classList.add('checked');
-  function changeRead() {
-    myLibrary = updateRead(i, myLibrary);
+  function updateRead() {
+    book.toggleRead();
     storeLibrary(myLibrary);
     renderLibrary(myLibrary, container);
   }
-  readNode.addEventListener('click', changeRead);
+  readNode.addEventListener('click', updateRead);
   bookNode.appendChild(readNode);
 
   const removeNode = document.createElement('p');
   removeNode.textContent = 'Remove book';
   removeNode.classList.add('book-remove', 'button');
   function deleteBook() {
-    myLibrary = removeBook(i, myLibrary);
+    removeBook(i, myLibrary);
     storeLibrary(myLibrary);
     renderLibrary(myLibrary, container);
   }
@@ -100,6 +83,8 @@ function renderBook(book, parentNode) {
 
   container.appendChild(bookNode);
 }
+
+const container = document.querySelector('#book-container');
 
 function renderLibrary(library, node) {
   clearNodes(node);
@@ -143,7 +128,7 @@ function getNewBookFromForm() {
 function saveNewBookFromForm() {
   const newBook = getNewBookFromForm();
   if (newBook) {
-    myLibrary = addBookToLibrary(newBook, myLibrary);
+    addBookToLibrary(newBook, myLibrary);
     storeLibrary(myLibrary);
     renderLibrary(myLibrary, container);
   }
