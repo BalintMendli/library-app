@@ -1,0 +1,200 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Gentium Book Basic', serif;
+  line-height: 1.15;
+  color: #464646;
+  background-color: #fffaf5;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.hide {
+  display: none;
+}
+
+#header {
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 0.08rem;
+  background-color: #f3cbad;
+  background: linear-gradient(to bottom, #f3cbad, #daad8c);
+  padding: 15px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+#header i {
+  margin-right: 20px;
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+
+#new-book-button {
+  font-size: 1.5rem;
+  margin-top: 50px;
+}
+
+.button {
+  padding: 10px 20px;
+  display: inline-block;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to bottom, #f3cbad, #daad8c, #f3cbad);
+  background-size: 100% 200%;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all ease-in-out 250ms;
+}
+
+.button:hover {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  background-position: 0 20%;
+}
+
+#new-book-button i {
+  margin-right: 15px;
+}
+
+.form {
+  margin: 30px 0;
+}
+
+.input-fields {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+input:not([type='checkbox']) {
+  margin: 10px 25px 10px 5px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 8px 12px;
+  font-family: inherit;
+  background: inherit;
+  transition: all ease-in-out 250ms;
+}
+
+input:not([type='checkbox']):focus {
+  outline: none;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+#add-book-button {
+  margin-top: 30px;
+  font-size: 1.2rem;
+}
+
+#book-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 25px;
+  margin: 50px 0;
+}
+
+@media (min-width: 620px) {
+  #book-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 992px) {
+  #book-container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.book {
+  padding: 15px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background-color: #f3cbad;
+  background: linear-gradient(to bottom, #f3cbad, #daad8c);
+}
+
+.book-title {
+  margin-top: 0;
+}
+
+.book-title::before {
+  content: '\f02d';
+  font-family: 'Font Awesome 5 Free';
+  font-size: 2rem;
+  display: block;
+  margin: 10px 0 15px;
+}
+
+.book-pages {
+  font-style: italic;
+}
+
+.book-read {
+  cursor: pointer;
+}
+
+.book-read::after,
+.checked::after {
+  font-family: 'Font Awesome 5 Free';
+  margin-left: 8px;
+  font-size: 1.5rem;
+  vertical-align: sub;
+  transform: all ease-in-out 250ms;
+}
+
+.book-read::after {
+  content: '\f0c8';
+}
+
+.checked::after {
+  content: '\f14a';
+}
+
+.book-read:hover::after,
+.book-read:hover::after {
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 3px 8px rgba(255, 255, 255, 0.1);
+}
+
+.book-remove {
+  cursor: pointer;
+}
+
+.book-remove::before {
+  content: '\f2ed';
+  font-family: 'Font Awesome 5 Free';
+  font-size: 1.2rem;
+  margin-right: 5px;
+}
